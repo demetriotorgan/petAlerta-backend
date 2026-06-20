@@ -46,8 +46,29 @@ const listarFotos = async (req, res) => {
     }
 };
 
+const limparFotos = async (req, res) => {
+    try {
+
+        const resultado = await Foto.deleteMany({});
+
+        res.status(200).json({
+            mensagem: "Todas as fotos foram removidas.",
+            totalRemovidas: resultado.deletedCount
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            erro: error.message
+        });
+
+    }
+};
+
+
 
 module.exports = {
     criarFoto,
-    listarFotos
+    listarFotos,
+    limparFotos
 };
