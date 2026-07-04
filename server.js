@@ -4,6 +4,8 @@ require('dotenv').config();
 
 const connectDB = require('./config/db');
 const petRoutes = require('./routes/petRoutes');
+const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 app.use(cors());
@@ -15,7 +17,8 @@ app.get('/', (req,res)=>{
     res.json({mensagem:'API PetAlert rodando'});    
 });
 
-app.use('/api', petRoutes);
+app.use('/api', petRoutes, authRoutes, adminRoutes);
+
 
 if(process.env.NODE_ENV !== 'production'){
     const PORT = process.env.PORT || 5000;
