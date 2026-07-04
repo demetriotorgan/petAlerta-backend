@@ -132,7 +132,7 @@ module.exports.deletarPet = async (req, res) => {
 
 module.exports.mudarEstadoLocalizado = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params;        
 
         const pet = await Pet.findByIdAndUpdate(
             id, {
@@ -150,6 +150,99 @@ module.exports.mudarEstadoLocalizado = async (req, res) => {
         return res.status(200).json({
             success: true,
             msg: 'Estado do Pet atualizado para Localizado',
+            data: pet
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            erro: 'Erro ao alterar estado do pet'
+        });
+    }
+};
+
+module.exports.mudarEstadoAdotado = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const pet = await Pet.findByIdAndUpdate(
+            id, {
+            estado: 'ADOTADO'
+        },
+            { new: true, runValidators: true }
+        );
+
+        if (!pet) {
+            return res.status(404).json({
+                success: false,
+                erro: 'Pet não encontrado'
+            })
+        };
+        return res.status(200).json({
+            success: true,
+            msg: 'Estado do Pet atualizado para Adotado',
+            data: pet
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            erro: 'Erro ao alterar estado do pet'
+        });
+    }
+};
+
+module.exports.mudarEstadoEncerrado = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const pet = await Pet.findByIdAndUpdate(
+            id, {
+            estado: 'ENCERRADO'
+        },
+            { new: true, runValidators: true }
+        );
+
+        if (!pet) {
+            return res.status(404).json({
+                success: false,
+                erro: 'Pet não encontrado'
+            })
+        };
+        return res.status(200).json({
+            success: true,
+            msg: 'Estado do Pet atualizado para Encerrado',
+            data: pet
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            erro: 'Erro ao alterar estado do pet'
+        });
+    }
+};
+
+module.exports.mudarEstadoAtivar = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const pet = await Pet.findByIdAndUpdate(
+            id, {
+            estado: 'ATIVO'
+        },
+            { new: true, runValidators: true }
+        );
+
+        if (!pet) {
+            return res.status(404).json({
+                success: false,
+                erro: 'Pet não encontrado'
+            })
+        };
+        return res.status(200).json({
+            success: true,
+            msg: 'Estado do Pet atualizado para ATIVADO',
             data: pet
         });
     } catch (error) {

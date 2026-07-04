@@ -56,12 +56,12 @@ const PetSchema = new mongoose.Schema(
             type: String,
             enum: [
                 'ATIVO',
+                'ADOTADO',
                 'LOCALIZADO',
-                'REUNIDO',
                 'ENCERRADO'
             ],
             default: 'ATIVO'
-        },
+        },        
         descricao: {
             type: String,
             required: [true, "A descrição do animal é obrigatória."],

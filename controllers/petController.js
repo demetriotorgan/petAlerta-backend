@@ -53,7 +53,8 @@ module.exports.listarPets = async (req, res) => {
     try {
         //filtra apenas aprovados
         const pets = await Pet.find({
-            'moderacao.status':'APROVADO'
+            'moderacao.status':'APROVADO',
+            estado: 'ATIVO'
         }).sort({ createdAt: -1 });
 
         return res.status(200).json({
