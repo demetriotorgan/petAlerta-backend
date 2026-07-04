@@ -1,42 +1,42 @@
 const Pet = require('../models/Pet');
 const cloudinary = require('../config/cloudinary');
 
-module.exports.listarTodosPets = async(req,res)=>{
+module.exports.listarTodosPets = async (req, res) => {
     try {
-        const {status} = req.query; //?status=PENDENTE
+        const { status } = req.query; //?status=PENDENTE
 
-        let filtro ={};
-        if(status){
+        let filtro = {};
+        if (status) {
             filtro['moderacao.status'] = status.toUpperCase();
         }
-        const pets = await Pet.find(filtro).sort({createdAt:-1});
+        const pets = await Pet.find(filtro).sort({ createdAt: -1 });
 
         return res.status(200).json({
-            success:true,
-            data:pets
+            success: true,
+            data: pets
         });
     } catch (error) {
         console.error(error);
         return res.status(500).json({
-            success:false,
-            erro:'Erro interno do servidor'
+            success: false,
+            erro: 'Erro interno do servidor'
         })
     }
 };
 
 //Aprovar PET
-module.exports.aprovarPet = async(req,res)=>{
+module.exports.aprovarPet = async (req, res) => {
     try {
-        const {id} = req.params; //api/admin/pets/:id/aprovar
+        const { id } = req.params; //api/admin/pets/:id/aprovar
 
         //1.Atualiza pet
         const pet = await Pet.findByIdAndUpdate(
-            id,{
-                'moderacao.status': 'APROVADO',
-                'moderacao.moderador': req.user.id, // vem do authMiddleware
-                'moderacao.dataModeracao': new Date()
-            },
-            {new: true} //retorna documento atualizado
+            id, {
+            'moderacao.status': 'APROVADO',
+            'moderacao.moderador': req.user.id, // vem do authMiddleware
+            'moderacao.dataModeracao': new Date()
+        },
+            { new: true } //retorna documento atualizado
         );
 
         //2. Se não encontrar 
@@ -63,19 +63,19 @@ module.exports.aprovarPet = async(req,res)=>{
 };
 
 //Reprovar Cadastro PET
-module.exports.reprovarPet = async(req,res)=>{
+module.exports.reprovarPet = async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
 
         const pet = await Pet.findByIdAndUpdate(
-            id,{
-                'moderacao.status': 'REJEITADO',
-                'moderacao.moderador': req.user.id,
-                'moderacao.dataModeracao': new Date()
-            },
-            {new: true}
+            id, {
+            'moderacao.status': 'REJEITADO',
+            'moderacao.moderador': req.user.id,
+            'moderacao.dataModeracao': new Date()
+        },
+            { new: true }
         );
-        
+
         if (!pet) {
             return res.status(404).json({
                 success: false,
@@ -89,7 +89,7 @@ module.exports.reprovarPet = async(req,res)=>{
             data: pet
         });
     } catch (error) {
-         console.error(error);
+        console.error(error);
         return res.status(500).json({
             success: false,
             erro: 'Erro ao reprovar pet'
@@ -98,9 +98,9 @@ module.exports.reprovarPet = async(req,res)=>{
 };
 
 //Deletar PET
-module.exports.deletarPet = async(req,res)=>{
+module.exports.deletarPet = async (req, res) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
 
         const pet = await Pet.findByIdAndDelete(id);
 
@@ -110,12 +110,12 @@ module.exports.deletarPet = async(req,res)=>{
                 erro: 'Pet não encontrado'
             });
         };
-        
+
         if (pet.foto?.publicId) {
             await cloudinary.uploader.destroy(pet.foto.publicId);
         };
 
-         return res.status(200).json({
+        return res.status(200).json({
             success: true,
             msg: 'Pet deletado com sucesso',
             id: pet._id
@@ -130,3 +130,33 @@ module.exports.deletarPet = async(req,res)=>{
     }
 };
 
+module.exports.mudarEstadoLocalizado = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const pet = await Pet.findByIdAndUpdate(
+            id, {
+            estado: 'LOCALIZADO'
+        },
+            { new: true, runValidators: true }
+        );
+
+        if (!pet) {
+            return res.status(404).json({
+                success: false,
+                erro: 'Pet não encontrado'
+            })
+        };
+        return res.status(200).json({
+            success: true,
+            msg: 'Estado do Pet atualizado para Localizado',
+            data: pet
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            erro: 'Erro ao alterar estado do pet'
+        });
+    }
+};

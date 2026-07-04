@@ -47,12 +47,21 @@ const PetSchema = new mongoose.Schema(
             maxlength: 40
         },
 
-        situacao: {
+        categoria: {
             type: String,
-            required: [true, "A situação do animal é obrigatória."],
+            required: [true, "A categoria do animal é obrigatória."],
             enum: ["DOACAO", "ENCONTRADO", "ABANDONADO", "PERDIDO", "CAMPANHA"]
         },
-
+        estado: {
+            type: String,
+            enum: [
+                'ATIVO',
+                'LOCALIZADO',
+                'REUNIDO',
+                'ENCERRADO'
+            ],
+            default: 'ATIVO'
+        },
         descricao: {
             type: String,
             required: [true, "A descrição do animal é obrigatória."],
