@@ -50,7 +50,7 @@ const PetSchema = new mongoose.Schema(
         situacao: {
             type: String,
             required:  [true, "A situação do animal é obrigatória."],
-            enum: ["DOACAO", "ENCONTRADO", "ABANDONADO", "PERDIDO"]
+            enum: ["DOACAO", "ENCONTRADO", "ABANDONADO", "PERDIDO", "CAMPANHA"]
         },
 
         descricao: {

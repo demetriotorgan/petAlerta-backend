@@ -12,7 +12,7 @@ app.use(express.json());
 connectDB();
 
 app.get('/', (req,res)=>{
-    res.json({mensagem:'PetAlert API rodando'});    
+    res.json({mensagem:'API PetAlert rodando'});    
 });
 
 app.use('/api', petRoutes);
