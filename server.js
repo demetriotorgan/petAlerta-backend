@@ -17,7 +17,9 @@ app.get('/', (req,res)=>{
     res.json({mensagem:'API PetAlert rodando'});    
 });
 
-app.use('/api', petRoutes, authRoutes, adminRoutes);
+app.use('/api', petRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
 
 
 if(process.env.NODE_ENV !== 'production'){

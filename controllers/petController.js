@@ -51,11 +51,14 @@ module.exports.criarPet = async (req, res) => {
 
 module.exports.listarPets = async (req, res) => {
     try {
-
-        const pets = await Pet.find().sort({ createdAt: -1 });
+        //filtra apenas aprovados
+        const pets = await Pet.find({
+            'moderacao.status':'APROVADO'
+        }).sort({ createdAt: -1 });
 
         return res.status(200).json({
             success: true,
+            count: pets.length,
             data: pets
         });
 
