@@ -5,13 +5,13 @@ const PetSchema = new mongoose.Schema(
         nomeAnimal: {
             type: String,
             default: 'Animal sem identificação',
-            trim: true,            
+            trim: true,
             maxlength: 50
         },
 
         especie: {
             type: String,
-            required:  [true, "A espécie é obrigatória."],
+            required: [true, "A espécie é obrigatória."],
             enum: ["CACHORRO", "GATO", "OUTRO"]
         },
 
@@ -25,7 +25,7 @@ const PetSchema = new mongoose.Schema(
 
         sexo: {
             type: String,
-            required:  [true, "O sexo do animal é obrigatório."],
+            required: [true, "O sexo do animal é obrigatório."],
             enum: ["MACHO", "FEMEA"]
         },
 
@@ -36,26 +36,26 @@ const PetSchema = new mongoose.Schema(
         },
         porte: {
             type: String,
-            required:  [true, "O porte do animal é obrigatório."],
+            required: [true, "O porte do animal é obrigatório."],
             enum: ["PEQUENO", "MEDIO", "GRANDE"]
         },
 
         cor: {
             type: String,
-            required:  [true, "A cor do animal é obrigatória."],
+            required: [true, "A cor do animal é obrigatória."],
             trim: true,
             maxlength: 40
         },
 
         situacao: {
             type: String,
-            required:  [true, "A situação do animal é obrigatória."],
+            required: [true, "A situação do animal é obrigatória."],
             enum: ["DOACAO", "ENCONTRADO", "ABANDONADO", "PERDIDO", "CAMPANHA"]
         },
 
         descricao: {
             type: String,
-            required:  [true, "A descrição do animal é obrigatória."],
+            required: [true, "A descrição do animal é obrigatória."],
             trim: true,
             minlength: 1,
             maxlength: 500
@@ -63,20 +63,20 @@ const PetSchema = new mongoose.Schema(
 
         cidade: {
             type: String,
-            required:  [true, "A cidade é obrigatória."],
+            required: [true, "A cidade é obrigatória."],
             trim: true,
             maxlength: 80,
             uppercase: true
         },
         nomeResponsavel: {
             type: String,
-            required:  [true, "O nome do responsável é obrigatório."],
+            required: [true, "O nome do responsável é obrigatório."],
             trim: true,
             maxlength: 80
         },
         telefone: {
             type: String,
-            required:  [true, "O telefone é obrigatório."],
+            required: [true, "O telefone é obrigatório."],
             trim: true,
             validate: {
                 validator: function (v) {
@@ -94,6 +94,28 @@ const PetSchema = new mongoose.Schema(
             publicId: {
                 type: String,
                 required: true
+            }
+        },
+        moderacao: {
+            status: {
+                type: String,
+                enum: [
+                    'PENDENTE',
+                    'APROVADO',
+                    'REJEITADO'
+                ],
+                default: 'PENDENTE'
+            },
+
+            moderador: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                default: null
+            },
+
+            dataModeracao: {
+                type: Date,
+                default: null
             }
         }
     },
