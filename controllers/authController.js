@@ -170,3 +170,17 @@ module.exports.rotaPrivadaTeste = async(req,res)=>{
         user: req.user 
     })
 };
+
+module.exports.listarUsuarios = async(req,res)=>{
+    try {
+        const users = await User.find()
+        .select('-senha')
+        .sort({createdAt:-1})
+        res.status(200).json(users);
+    } catch (error) {
+        console.error('Erro ao listar usuarios');
+        res.status(500).json({
+            erro:'Erro ao listar usuarios'
+        })
+    }
+}
