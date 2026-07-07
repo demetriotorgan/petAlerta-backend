@@ -75,6 +75,44 @@ module.exports.login = async (req, res) => {
 
 };
 
+module.exports.getMe = async (req, res) => {
+    try {
+        // req.user vem do middleware de autenticação com id e cargo
+        const user = await User.findById(req.user.id).select('-senha');
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                erro: 'Usuário não encontrado'
+            });
+        }
+
+        if (user.ativo === false) {
+            return res.status(403).json({
+                success: false,
+                erro: 'Usuário desativado'
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            user: {
+                id: user._id,
+                nome: user.nome,
+                email: user.email,
+                cargo: user.cargo,
+                ultimoLogin: user.ultimoLogin
+            }
+        });
+    } catch (error) {
+        console.error('Erro no getMe:', error);
+        return res.status(500).json({
+            success: false,
+            erro: 'Erro interno no servidor'
+        });
+    }
+};
+
 module.exports.criarUsuario = async (req, res) => {
     try {
         const { nome, email, senha, cargo } = req.body
