@@ -183,4 +183,18 @@ module.exports.listarUsuarios = async(req,res)=>{
             erro:'Erro ao listar usuarios'
         })
     }
-}
+};
+
+module.exports.deletarUsuario = async(req,res)=>{
+    const {id} = req.params;
+    try {
+        const deletado = await User.findByIdAndDelete(id);
+        if(!deletado){
+            return res.status(404).json({erro:'Registro não encontrado'});
+        }
+        res.status(200).json({msg:'Usuario deletado com sucesso', deletado});
+    } catch (error) {
+        console.error('Erro ao deletar usuario: ', error);
+        res.status(500).json({erro:'Erro ao deletar leitura'});
+    }
+};
