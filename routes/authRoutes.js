@@ -4,8 +4,11 @@ const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-router.post('/register', authMiddleware, criarUsuario );
+//rotas publicas
+router.post('/register', criarUsuario );
 router.post('/login', login);
+
+//Rotas privadas
 router.get('/me', authMiddleware, getMe);
 router.get('/usuarios', authMiddleware, listarUsuarios);
 router.delete('/:id/deletar', authMiddleware, deletarUsuario);
